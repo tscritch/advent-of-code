@@ -14,15 +14,9 @@ void printl_int(long *list, int len) {
     printf("%ld\n", list[i]);
   }
 }
-void printl_char(char *list) {
-  for (int i = 0; i < 1000; i++) {
-    printf("%d\n", list[i]);
-  }
-}
 
-int int_comp(const void *a, const void *b) { return (*(int *)a - *(int *)b); }
 
-int is_cool(long num) {
+int invalid1(long num) {
   if (num < 10)
     return 0;
 
@@ -43,6 +37,56 @@ int is_cool(long num) {
   return 1;
 }
 
+int invalid2(long num) {
+  if (num < 10)
+    return 0;
+
+  static char s[20];
+  static int len;
+  sprintf(s, "%ld", num);
+  len = strlen(s);
+
+  // just return faster if 2 digit num
+  if (len == 2 && s[0] == s[1]) return 1;
+
+  if (len % 2 == 1 && len < 8) {
+      char f = s[0];
+      for (int i = 1; i < len; i++) {
+          if (f != s[i]) return 0;
+      }
+      return 1;
+  }
+
+  int mid = (int)len / 2;
+
+  char sub[12] = {'\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0'};
+
+  // w for width of check
+  for (int w=1; w < mid; w++) {
+    if (len % (w+1) != 0) continue;
+    substring(s, sub, 0, w);
+
+    int eq = 1;
+    char com[12] = {'\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0','\0'};
+    for (int i = w+1; i < len; i+=w+1) {
+        substring(s, com, i, w+i);
+        if (strcmp(com, "") == 0 || strlen(com) < w+1) break;
+
+        if (strcmp(sub, com) == 0) {
+            continue;
+        }
+
+        eq = 0;
+        break;
+    }
+
+    if (eq) return 1;
+  }
+
+
+  return 0;
+}
+
 int main(int argc, char *argv[]) {
   printf("-------------\n");
 
@@ -56,35 +100,35 @@ int main(int argc, char *argv[]) {
 
   long l, r;
 
-  long cool_num[1000];
+  long invalid[10000];
   int cn_idx = 0;
 
   // initialize array because I was getting random numbers!
-  for(int i=0; i<1000; i++) cool_num[i] = 0;
+  for(int i=0; i<1000; i++) invalid[i] = 0;
 
   while (fscanf(file, "%ld-%ld\n", &l, &r) != EOF) {
-    // printf("Group: %ld-%ld\n", l, r);
     for (long i = l; i <= r; i++) {
-      if (is_cool(i) == 1) {
-        // printf("%ld\n", i);
-        cool_num[cn_idx] = i;
+      if (invalid2(i) == 1) {
+        invalid[cn_idx] = i;
         cn_idx++;
       }
     }
   }
 
-  printl_int(cool_num, cn_idx+3);
+  // printl_int(invalid, cn_idx);
 
-  long sum = 0;
-  for (int i = 0; i <= cn_idx; i++) {
-    sum += cool_num[i];
+  long long sum = 0;
+  for (int i = 0; i < cn_idx; i++) {
+    sum += invalid[i];
   }
 
-  printf("Answer: %ld\n", sum);
+  printf("Answer: %lld\n", sum);
 
   return 0;
 }
 
 // tried 6039066582
 // 46503113174 - too high
-// 40398804950
+//
+// Part 1 Answer: 40398804950
+// Part 2 Answer: 65794984339
