@@ -9,5 +9,13 @@ run day_number input_file_path:
 
     ./{{day_number}}/bin/run ./{{day_number}}/{{input_file_path}}
 
+bun day_number:
+    bun {{day_number}}/main.ts
+
+newb day_number:
+    mkdir {{day_number}}
+    touch ./{{day_number}}/input.txt ./{{day_number}}/main.ts
+    echo "import { readInput } from \"../utils\";\n\nconst input = await readInput(\"./3/input.txt\");\n\nconsole.log(input);" > ./{{day_number}}/main.ts
+
 format:
   find . -name "*.c" -exec clang-format -i {} \;
