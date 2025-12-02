@@ -9,9 +9,9 @@ void substring(char *buffer, char *out, int start, int end) {
   }
 }
 
-void printl_int(int *list, int len) {
+void printl_int(long *list, int len) {
   for (int i = 0; i < len; i++) {
-    printf("%d\n", list[i]);
+    printf("%ld\n", list[i]);
   }
 }
 void printl_char(char *list) {
@@ -56,21 +56,24 @@ int main(int argc, char *argv[]) {
 
   long l, r;
 
-  int cool_num[1000];
+  long cool_num[1000];
   int cn_idx = 0;
 
+  // initialize array because I was getting random numbers!
+  for(int i=0; i<1000; i++) cool_num[i] = 0;
+
   while (fscanf(file, "%ld-%ld\n", &l, &r) != EOF) {
-    printf("Group: %ld-%ld\n", l, r);
+    // printf("Group: %ld-%ld\n", l, r);
     for (long i = l; i <= r; i++) {
       if (is_cool(i) == 1) {
-        printf("%ld\n", i);
+        // printf("%ld\n", i);
         cool_num[cn_idx] = i;
         cn_idx++;
       }
     }
   }
 
-  printl_int(cool_num, cn_idx);
+  printl_int(cool_num, cn_idx+3);
 
   long sum = 0;
   for (int i = 0; i <= cn_idx; i++) {
@@ -79,14 +82,9 @@ int main(int argc, char *argv[]) {
 
   printf("Answer: %ld\n", sum);
 
-  //   printf("Is cool: %d\n", is_cool(1010));
-  //   printf("Is cool: %d\n", is_cool(123123));
-  //   printf("Is cool: %d\n", is_cool(1188511885));
-  //   printf("NOT cool: %d\n", is_cool(118851188));
-  //   printf("NOT cool: %d\n", is_cool(1188511886));
-  //   printf("NOT cool: %d\n", is_cool(12));
-
   return 0;
 }
 
 // tried 6039066582
+// 46503113174 - too high
+// 40398804950
