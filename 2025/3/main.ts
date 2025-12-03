@@ -57,4 +57,5 @@ const joltage_pt2 = lines.reduce((acc: number, line: string) => {
   return acc;
 }, 0);
 
-console.log(`Total: ${joltage_pt2}`);
+console.log(`Pt 1: ${joltage_pt1}`);
+console.log(`Pt 2: ${joltage_pt2}`);
