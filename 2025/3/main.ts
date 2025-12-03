@@ -6,7 +6,7 @@ const input = await readInput("./3/input.txt");
 
 const lines = input.split("\n");
 
-const joltage = lines.reduce((acc: number, line: string) => {
+const joltage_pt1 = lines.reduce((acc: number, line: string) => {
   let left = 0;
   let left_idx = 0;
   // do less than full length cause we can't have a left digit as the last in the line
@@ -31,4 +31,30 @@ const joltage = lines.reduce((acc: number, line: string) => {
   return acc;
 }, 0);
 
-console.log(`Total: ${joltage}`);
+const DIGIT_AMOUNT = 12;
+
+const joltage_pt2 = lines.reduce((acc: number, line: string) => {
+  let digits: number[] = [];
+
+  let last_idx = 0;
+  for (let d = 0; d < DIGIT_AMOUNT; d++) {
+    let tmp = 0;
+    let len = (d == 0 ? line.length : line.length) - (DIGIT_AMOUNT - 1) + d;
+    if (d == DIGIT_AMOUNT - 1) len = line.length;
+    for (let i = last_idx; i < len; i++) {
+      if (Number(line[i]) > tmp) {
+        tmp = Number(line[i]);
+        last_idx = i + 1;
+      }
+    }
+    digits[d] = tmp;
+  }
+
+  const j = Number(digits.join(""));
+  console.log("bank:", j, digits.toString());
+
+  acc += j;
+  return acc;
+}, 0);
+
+console.log(`Total: ${joltage_pt2}`);
